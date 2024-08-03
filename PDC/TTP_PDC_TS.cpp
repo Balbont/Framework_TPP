@@ -2,13 +2,22 @@
 #include <vector>
 #include <fstream> 
 #include <random>
-#include "../Algoritmos/algoritmos_TTP.cpp"
+//#include "../Algoritmos/algoritmos_TTP.cpp"
 #include <sstream>
 #include <iterator>
 #include <bits/stdc++.h>
 using namespace std;
 
-int main(int argc, char *argv[]){
+void pdc_ts(){
+
+    //Parametros TS PDC
+
+    int iteraciones = 1000;
+    vector<int> largos_listas_equipos = {8,4,2}; //largos en cada fase
+    vector<int> largos_listas_fechas = {12,6,3}; //largos en cada fase
+    vector<vector<int>>  probabilidades_operadores = {{10,10,10,35,35},{20,20,20,20,20},{26,27,27,10,10}}; //probalidades en cada fase
+
+    //Parametros instancia
 
     int contador_fila = 0;
 
@@ -217,74 +226,10 @@ int main(int argc, char *argv[]){
     // -------------------------------------------------- FIN LECTURA INSTANCIA ------------------------------------------------------
 
     // generando calendarizacion inicial
-
     vector<vector<int>> rueda1_inicial = creacion_fixture_inicial(16);
     vector<vector<int>> rueda2_inicial = generacion_rueda_mirrored(rueda1_inicial);
 
-    //print_calendarizacion(rueda1_inicial, rueda2_inicial);
-
-    int iteraciones;
-    vector<int> largos_listas_equipos;
-    vector<int> largos_listas_fechas;
-    vector<vector<int>>  probabilidades_operadores = {{},{},{}};
-
-    //lectura de parametros
-
-    for (int i = 0; i <= 22; i++){
-
-        if (i == 1){
-            iteraciones = stoi(argv[i]);
-        }
-        else if (i >= 2 && i <= 4){
-            largos_listas_equipos.push_back(stoi(argv[i]));
-        }
-        else if (i >= 5 && i <= 7){
-            largos_listas_fechas.push_back(stoi(argv[i]));
-        }
-        else if (i >= 8 && i <= 12){
-            probabilidades_operadores[0].push_back(stoi(argv[i]));
-        }
-        else if (i >= 13 && i <= 17){
-            probabilidades_operadores[1].push_back(stoi(argv[i]));
-        }
-        else if (i >= 18 && i <= 22){
-            probabilidades_operadores[2].push_back(stoi(argv[i]));
-        }
-    }
-
-    // normalizando probabilidades
-    for (int i = 0; i < probabilidades_operadores.size(); i++){
-        int suma = 0;
-        for (int j = 0; j < probabilidades_operadores[i].size(); j++){
-            suma += probabilidades_operadores[i][j];
-        }
-        for (int j = 0; j < probabilidades_operadores[i].size(); j++){
-            probabilidades_operadores[i][j] = int(probabilidades_operadores[i][j]*100/suma);
-        }
-    }
-
-    //imprimiendo parametros leidos
-    /*
-    cout << "Iteraciones: " << iteraciones << endl;
-    cout << "Largos listas equipos: ";
-    for (int i = 0; i < largos_listas_equipos.size(); i++){
-        cout << largos_listas_equipos[i] << " ";
-    }
-    cout << endl;
-    cout << "Largos listas fechas: ";
-    for (int i = 0; i < largos_listas_fechas.size(); i++){
-        cout << largos_listas_fechas[i] << " ";
-    }
-    cout << endl;
-    cout << "Probabilidades operadores: " << endl;
-    for (int i = 0; i < probabilidades_operadores.size(); i++){
-        for (int j = 0; j < probabilidades_operadores[i].size(); j++){
-            cout << probabilidades_operadores[i][j] << " ";
-        }
-        cout << endl;
-    }
-    */
-
+    // calendarizacion generada con TS
     vector<vector<vector<int>>> ruedas_TS = tabu_search_pdc(rueda1_inicial, rueda2_inicial, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante, largos_listas_equipos, largos_listas_fechas, probabilidades_operadores, iteraciones);
@@ -295,191 +240,187 @@ int main(int argc, char *argv[]){
     int evaluacion_actual_TS = funcion_evaluacion_pdc(rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+    
+    print_calendarizacion(rueda1_TS, rueda2_TS);
+    cout << "\nFixture PDC TS" << endl;
+    cout << "Valor evaluacion: " << evaluacion_actual_TS << endl;
+    cout << "\nCosto restricciones: " << endl;
 
-    bool info_completa = false;
+    print_costo_restricciones_pdc(rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
+    equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores,
+    fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+    cout << "\n";
 
-    if (!info_completa){
-        cout << evaluacion_actual_TS << endl;
+    // -------------------------------------------------- REVISIONES ------------------------------------------------------
+
+    /*
+
+    // contandos fechas disputadas de local por rueada
+    for (int i = 0; i < 16; i++){
+        int contador = 0;
+        for (int j = 0; j < 15; j++){
+            if (rueda1_TS[i][j] > 0){
+                contador++;
+            }
+        }
+        cout << "Equipo " << i+1 << " juega " << contador << " partidos de local en la rueda 1" << endl;
     }
-    else{
-        print_calendarizacion(rueda1_TS, rueda2_TS);
-        cout << "\nFixture PDC TS" << endl;
-        cout << "Valor evaluacion: " << evaluacion_actual_TS << endl;
-        cout << "\nCosto restricciones: " << endl;
+    
 
-        print_costo_restricciones_pdc(rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
-        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores,
-        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
-        cout << "\n";
+    // revisiones que este correcto el fixture respecto a restricciones base
+    
+    cout << "Contando signos negativos por columna" << endl;
 
-        // contandos fechas disputadas de local por rueada
-        /*
-        for (int i = 0; i < 16; i++){
-            int contador = 0;
-            for (int j = 0; j < 15; j++){
-                if (rueda1_TS[i][j] > 0){
-                    contador++;
-                }
+    cout << "Rueda 1" << endl;
+
+    for (int i = 0; i < 15; i++){
+        int contador = 0;
+        for (int j = 0; j < 16; j++){
+            if (rueda1_TS[j][i] < 0){
+                contador++;
             }
-            cout << "Equipo " << i+1 << " juega " << contador << " partidos de local en la rueda 1" << endl;
         }
-        */
+        cout << "Fecha " << i+1 << ": " << contador << endl;
+    }
 
-        // revisiones que este correcto el fixture respecto a restricciones base
-        /*
-        cout << "Contando signos negativos por columna" << endl;
+    cout << "Rueda 2" << endl;
 
-        cout << "Rueda 1" << endl;
-
-        for (int i = 0; i < 15; i++){
-            int contador = 0;
-            for (int j = 0; j < 16; j++){
-                if (rueda1_TS[j][i] < 0){
-                    contador++;
-                }
+    for (int i = 0; i < 15; i++){
+        int contador = 0;
+        for (int j = 0; j < 16; j++){
+            if (rueda2_TS[j][i] < 0){
+                contador++;
             }
-            cout << "Fecha " << i+1 << ": " << contador << endl;
         }
+        cout << "Fecha " << i+1 << ": " << contador << endl;
+    }
+    
 
-        cout << "Rueda 2" << endl;
+    int contador_errores_localias_inversas = 0;
 
-        for (int i = 0; i < 15; i++){
-            int contador = 0;
-            for (int j = 0; j < 16; j++){
-                if (rueda2_TS[j][i] < 0){
-                    contador++;
-                }
-            }
-            cout << "Fecha " << i+1 << ": " << contador << endl;
-        }
-        */
-
-        int contador_errores_localias_inversas = 0;
-
-        //revisando que las localias esten invertidas por equipos
-        for (int i = 0; i < 16; i++){
-            for (int j = 0; j < 15; j++){ //rueda1
-                int rival_primera_rueda = abs(rueda1_TS[i][j]);
-                for (int k = 0; k < 15; k++){ // rueda2
-                    if (abs(rueda2_TS[i][k]) == rival_primera_rueda){
-                        if (rueda1_TS[i][j] > 0 && rueda2_TS[i][k] > 0 || rueda1_TS[i][j] < 0 && rueda2_TS[i][k] < 0){
-                            cout << "Error en localias inversas equipos " << i+1 << " y " << rival_primera_rueda << endl;
-                            contador_errores_localias_inversas++;
-                        }
+    //revisando que las localias esten invertidas por equipos
+    for (int i = 0; i < 16; i++){
+        for (int j = 0; j < 15; j++){ //rueda1
+            int rival_primera_rueda = abs(rueda1_TS[i][j]);
+            for (int k = 0; k < 15; k++){ // rueda2
+                if (abs(rueda2_TS[i][k]) == rival_primera_rueda){
+                    if (rueda1_TS[i][j] > 0 && rueda2_TS[i][k] > 0 || rueda1_TS[i][j] < 0 && rueda2_TS[i][k] < 0){
+                        cout << "Error en localias inversas equipos " << i+1 << " y " << rival_primera_rueda << endl;
+                        contador_errores_localias_inversas++;
                     }
                 }
             }
         }
-
-        cout << "Errores encontrados: " << contador_errores_localias_inversas << endl;
-
-        int contador_errores_sumatoria_columna = 0;
-        int suma_col;
-
-        //rueda 1
-        for (int i = 0; i < 15; i++){ // por fecha
-            suma_col = 0;
-            for (int j = 0; j < 16; j++){ // por equipo
-                suma_col += abs(rueda1_TS[j][i]);
-            }
-            if (suma_col != 136){
-                cout << "Error en la suma de la fecha " << i+1 << endl;
-                contador_errores_sumatoria_columna++;
-            }
-        }
-
-        //rueda 2
-        for (int i = 0; i < 15; i++){ // por fecha
-            suma_col = 0;
-            for (int j = 0; j < 16; j++){ // por equipo
-                suma_col += abs(rueda2_TS[j][i]);
-            }
-            if (suma_col != 136){
-                cout << "Error en la suma de la fecha " << i+20 << endl;
-                contador_errores_sumatoria_columna++;
-            }
-        }
-
-        cout << "Errores encontrados suma fecha: " << contador_errores_sumatoria_columna << endl;
-
-        //revision de que en cada rueda un equipo se enfrente a todos los demas
-        vector<int> equipos_enfrentados = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
-        for (int i = 0; i <16; i++){
-            //rueda 1
-            vector<int> rivales_aux = equipos_enfrentados;
-            auto it = std::find(rivales_aux.begin(), rivales_aux.end(), i+1); 
-            if (it != rivales_aux.end()) { 
-                rivales_aux.erase(it); 
-            }
-            for(int j = 0; j < 15; j++){
-                auto it2 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda1_TS[i][j])); 
-                if (it2 != rivales_aux.end()) { 
-                    rivales_aux.erase(it2); 
-                }
-            }
-            if (rivales_aux.size() != 0){
-                cout << "Error en rueda 1, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
-            }
-            //rueda 2
-            rivales_aux = equipos_enfrentados;
-            auto it3 = std::find(rivales_aux.begin(), rivales_aux.end(), i+1);
-            if (it3 != rivales_aux.end()) { 
-                rivales_aux.erase(it3); 
-            }
-            for(int j = 0; j < 15; j++){
-                auto it4 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda2_TS[i][j])); 
-                if (it4 != rivales_aux.end()) { 
-                    rivales_aux.erase(it4); 
-                }
-            }
-            if (rivales_aux.size() != 0){
-                cout << "Error en rueda 2, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
-            }
-        }
-
-        //revision de consistencia por fecha
-        // si i juega contra j, entonces j debe jugar contra i (ademas los signos deben ser contrarios)
-
-        int error_consistencia_fecha = 0;
-
-        //revisando rueda 1
-        for (int j = 0; j < 15; j++){
-            for (int i = 0; i < 16; i++){
-                int rival = abs(rueda1_TS[i][j]);
-
-                // rival debe jugar contra i+1
-                if(abs(rueda1_TS[rival-1][j]) != i+1){
-                    cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
-                    error_consistencia_fecha++; 
-                }
-
-                // signos deben ser contrarios    
-                if (rueda1_TS[i][j] > 0 && rueda1_TS[rival-1][j] > 0 || rueda1_TS[i][j] < 0 && rueda1_TS[rival-1][j] < 0){
-                    cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
-                    error_consistencia_fecha++;
-                }
-            }
-        }
-
-        //revisando rueda 2
-        for (int j = 0; j < 15; j++){
-            for (int i = 0; i < 16; i++){
-                int rival = abs(rueda2_TS[i][j]);
-                // rival debe jugar contra i+1
-                if(abs(rueda2_TS[rival-1][j]) != i+1){
-                    cout << "Error en consistencia de fecha " << j+17 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
-                    error_consistencia_fecha++; 
-                }
-
-                // signos deben ser contrarios    
-                if (rueda2_TS[i][j] > 0 && rueda2_TS[rival-1][j] > 0 || rueda2_TS[i][j] < 0 && rueda2_TS[rival-1][j] < 0){
-                    cout << "Error en consistencia de fecha " << j+17 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
-                    error_consistencia_fecha++;
-                }
-            }
-        }
-        
-        cout << "Errores en consistencia de fecha: " << error_consistencia_fecha << endl;
-
     }
+
+    cout << "Errores encontrados: " << contador_errores_localias_inversas << endl;
+
+    int contador_errores_sumatoria_columna = 0;
+    int suma_col;
+
+    //rueda 1
+    for (int i = 0; i < 15; i++){ // por fecha
+        suma_col = 0;
+        for (int j = 0; j < 16; j++){ // por equipo
+            suma_col += abs(rueda1_TS[j][i]);
+        }
+        if (suma_col != 136){
+            cout << "Error en la suma de la fecha " << i+1 << endl;
+            contador_errores_sumatoria_columna++;
+        }
+    }
+
+    //rueda 2
+    for (int i = 0; i < 15; i++){ // por fecha
+        suma_col = 0;
+        for (int j = 0; j < 16; j++){ // por equipo
+            suma_col += abs(rueda2_TS[j][i]);
+        }
+        if (suma_col != 136){
+            cout << "Error en la suma de la fecha " << i+20 << endl;
+            contador_errores_sumatoria_columna++;
+        }
+    }
+
+    cout << "Errores encontrados suma fecha: " << contador_errores_sumatoria_columna << endl;
+
+    //revision de que en cada rueda un equipo se enfrente a todos los demas
+    vector<int> equipos_enfrentados = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    for (int i = 0; i <16; i++){
+        //rueda 1
+        vector<int> rivales_aux = equipos_enfrentados;
+        auto it = std::find(rivales_aux.begin(), rivales_aux.end(), i+1); 
+        if (it != rivales_aux.end()) { 
+            rivales_aux.erase(it); 
+        }
+        for(int j = 0; j < 15; j++){
+            auto it2 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda1_TS[i][j])); 
+            if (it2 != rivales_aux.end()) { 
+                rivales_aux.erase(it2); 
+            }
+        }
+        if (rivales_aux.size() != 0){
+            cout << "Error en rueda 1, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
+        }
+        //rueda 2
+        rivales_aux = equipos_enfrentados;
+        auto it3 = std::find(rivales_aux.begin(), rivales_aux.end(), i+1);
+        if (it3 != rivales_aux.end()) { 
+            rivales_aux.erase(it3); 
+        }
+        for(int j = 0; j < 15; j++){
+            auto it4 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda2_TS[i][j])); 
+            if (it4 != rivales_aux.end()) { 
+                rivales_aux.erase(it4); 
+            }
+        }
+        if (rivales_aux.size() != 0){
+            cout << "Error en rueda 2, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
+        }
+    }
+
+    //revision de consistencia por fecha
+    // si i juega contra j, entonces j debe jugar contra i (ademas los signos deben ser contrarios)
+
+    int error_consistencia_fecha = 0;
+
+    //revisando rueda 1
+    for (int j = 0; j < 15; j++){
+        for (int i = 0; i < 16; i++){
+            int rival = abs(rueda1_TS[i][j]);
+
+            // rival debe jugar contra i+1
+            if(abs(rueda1_TS[rival-1][j]) != i+1){
+                cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
+                error_consistencia_fecha++; 
+            }
+
+            // signos deben ser contrarios    
+            if (rueda1_TS[i][j] > 0 && rueda1_TS[rival-1][j] > 0 || rueda1_TS[i][j] < 0 && rueda1_TS[rival-1][j] < 0){
+                cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
+                error_consistencia_fecha++;
+            }
+        }
+    }
+
+    //revisando rueda 2
+    for (int j = 0; j < 15; j++){
+        for (int i = 0; i < 16; i++){
+            int rival = abs(rueda2_TS[i][j]);
+            // rival debe jugar contra i+1
+            if(abs(rueda2_TS[rival-1][j]) != i+1){
+                cout << "Error en consistencia de fecha " << j+17 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
+                error_consistencia_fecha++; 
+            }
+
+            // signos deben ser contrarios    
+            if (rueda2_TS[i][j] > 0 && rueda2_TS[rival-1][j] > 0 || rueda2_TS[i][j] < 0 && rueda2_TS[rival-1][j] < 0){
+                cout << "Error en consistencia de fecha " << j+17 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
+                error_consistencia_fecha++;
+            }
+        }
+    }
+    
+    cout << "Errores en consistencia de fecha: " << error_consistencia_fecha << endl;
+    */
 }

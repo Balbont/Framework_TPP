@@ -67,6 +67,7 @@ vector<vector<vector<int>>> tabu_search_epl(int distancia_optima, int fecha_boxi
 
     for(int iter=0; iter < cantidad_iteraciones_TS; iter++){
 
+         cout << "Iteracion: " << iter << " Evaluacion actual: " << evaluacion_actual << " Mejor evaluacion global: " << mejor_evaluacion_gobal << endl;
 
         probabilidad_operador = distrib_probabilidad(rd);
 
@@ -620,6 +621,9 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
     int contador_iteraciones_cambio_temperatura = 0;
 
     for (int iteracion=0; iteracion < cantidad_iteraciones; iteracion++){
+
+        cout << "Iteracion: " << iteracion << " Temperatura: " << temperatura << " Evaluacion actual: " << mejor_evaluacion_actual << " Mejor evaluacion global: " << mejor_evaluacion_global << endl;
+
         int operador = distrib_operador(rd);
 
         int mejor_evaluacion_iteracion = 999999;

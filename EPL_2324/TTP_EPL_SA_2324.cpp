@@ -8,7 +8,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main(int argc, char *argv[]){
+void epl_sa_2324(){
+
+    // Parametros SA EPL 23/24
+
+    int tempertura = 1000;
+    float tasa_enfriamiento = 0.8; 
+    int cambios_temperatura = 5;
+    int cantidad_iteraciones = 1000;
+
+    //Parametros instancia
    
     // ---------------------------------------------------- lectura de instanica EPL ----------------------------------------------------
 
@@ -245,44 +254,11 @@ int main(int argc, char *argv[]){
 
     // ------------------------------------------------- fin lectura de instanica EPL ---------------------------------------------------
     
-    // parametros SA
-    int tempertura; //1000
-    float tasa_enfriamiento; //0.8
-    int cambios_temperatura; //15
-    int cantidad_iteraciones;
-
-    for (int i = 0; i <=4; i++){
-        if(i == 1){
-            cantidad_iteraciones = stoi(argv[1]);
-        }
-        else if(i == 2){
-            tempertura = stoi(argv[2]);
-        }
-        else if(i == 3){
-            tasa_enfriamiento = stof(argv[3]);
-        }
-        else if(i == 4){
-            cambios_temperatura = stoi(argv[4]);
-        }
-    }
-
-    //forzando que tasa_enfriamiento sea decimal
-
-    while (tasa_enfriamiento > 1){
-        tasa_enfriamiento = tasa_enfriamiento/10;
-    }
-
-    //imprime parametros
-    /*
-    cout << "Parametros SA" << endl;
-    cout << "Temperatura inicial: " << tempertura << endl;
-    cout << "Tasa de enfriamiento: " << tasa_enfriamiento << endl;
-    cout << "Cambios de temperatura: " << cambios_temperatura << endl;
-    */
-
+    //generando calendarizacion inicial
     vector<vector<int>> rueda1_inicial = creacion_fixture_inicial(20);
     vector<vector<int>> rueda2_inicial = generacion_rueda_mirrored(rueda1_inicial);
     
+    // calendarizacion generada con SA
     vector<vector<vector<int>>> ruedas_SA = sa_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_inicial, rueda2_inicial, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias, tempertura, cantidad_iteraciones, tasa_enfriamiento, cambios_temperatura);
 
     vector<vector<int>> rueda1_SA = ruedas_SA[0];
@@ -291,194 +267,192 @@ int main(int argc, char *argv[]){
     int evaluacion_actual_SA = funcion_evaluacion_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_SA, rueda2_SA, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
     int distancia_total_SA = distancia_festivos(rueda1_SA, rueda2_SA, distancias, fecha_boxing_day, fecha_new_year);
 
-    bool info_completa = false;
+    print_calendarizacion(rueda1_SA, rueda2_SA);
+    cout << "\nFixture SA" << endl;
+    cout << "Distancia total: " << distancia_total_SA << endl;
+    cout << "Valor evaluacion: " << evaluacion_actual_SA << endl;
 
-    if (!info_completa){
-        cout << evaluacion_actual_SA << endl;
+    cout << "\nCosto de restricciones" << endl;
+    print_costo_restricciones_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_SA, rueda2_SA, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
+    
+    // -------------------------------------------------- HILL CLIMBING ------------------------------------------------------
+
+    cout << "\nAplicando Hill Climbing mejor mejora con solucion de SA" << endl;
+
+    vector<vector<vector<int>>> ruedas_HCMM_SA = hill_climbing_epl_mejor_mejora(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_SA, rueda2_SA, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
+
+    int evaluacion_actual_HCMM_SA = funcion_evaluacion_epl(distancia_optima, fecha_boxing_day, fecha_new_year, ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
+    int distancia_total_HCMM_SA = distancia_festivos(ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], distancias, fecha_boxing_day, fecha_new_year);
+
+    cout << "\nFixture HCMM_TS" << endl;
+    cout << "Distancia total: " << distancia_total_HCMM_SA << endl;
+    cout << "Valor evaluacion: " << evaluacion_actual_HCMM_SA << endl;
+    cout << "\n";
+
+    print_calendarizacion(ruedas_HCMM_SA[0], ruedas_HCMM_SA[1]);
+
+    print_costo_restricciones_epl(distancia_optima, fecha_boxing_day, fecha_new_year, ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
+    
+
+    // -------------------------------------------------- REVISIONES ------------------------------------------------------
+    /*
+
+    // para revision de HC
+
+    rueda1_SA = ruedas_HCMM_SA[0];
+    rueda2_SA = ruedas_HCMM_SA[1];
+
+    //cout << "Contando signos negativos por columna" << endl;
+
+    //cout << "Rueda 1" << endl;
+
+    for (int i = 0; i < 19; i++){
+        int contador = 0;
+        for (int j = 0; j < 20; j++){
+            if (rueda1_SA[j][i] < 0){
+                contador++;
+            }
+        }
+        //cout << "Fecha " << i+1 << ": " << contador << endl;
     }
 
-    else{
-        print_calendarizacion(rueda1_SA, rueda2_SA);
-        cout << "\nFixture SA" << endl;
-        cout << "Distancia total: " << distancia_total_SA << endl;
-        cout << "Valor evaluacion: " << evaluacion_actual_SA << endl;
+    //cout << "Rueda 2" << endl;
 
-        cout << "\nCosto de restricciones" << endl;
-        print_costo_restricciones_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_SA, rueda2_SA, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
-        cout << "\n";
-        //cout << "Contando signos negativos por columna" << endl;
-
-        //cout << "Rueda 1" << endl;
-
-        for (int i = 0; i < 19; i++){
-            int contador = 0;
-            for (int j = 0; j < 20; j++){
-                if (rueda1_SA[j][i] < 0){
-                    contador++;
-                }
+    for (int i = 0; i < 19; i++){
+        int contador = 0;
+        for (int j = 0; j < 20; j++){
+            if (rueda2_SA[j][i] < 0){
+                contador++;
             }
-            //cout << "Fecha " << i+1 << ": " << contador << endl;
         }
+        //cout << "Fecha " << i+1 << ": " << contador << endl;
+    }
 
-        //cout << "Rueda 2" << endl;
+    int contador_errores_localias_inversas = 0;
 
-        for (int i = 0; i < 19; i++){
-            int contador = 0;
-            for (int j = 0; j < 20; j++){
-                if (rueda2_SA[j][i] < 0){
-                    contador++;
-                }
-            }
-            //cout << "Fecha " << i+1 << ": " << contador << endl;
-        }
-
-        int contador_errores_localias_inversas = 0;
-
-        //revisando que las localias esten invertidas por equipos
-        for (int i = 0; i < 20; i++){
-            for (int j = 0; j < 19; j++){ //rueda1
-                int rival_primera_rueda = abs(rueda1_SA[i][j]);
-                for (int k = 0; k < 19; k++){ // rueda2
-                    if (abs(rueda2_SA[i][k]) == rival_primera_rueda){
-                        if (rueda1_SA[i][j] > 0 && rueda2_SA[i][k] > 0 || rueda1_SA[i][j] < 0 && rueda2_SA[i][k] < 0){
-                            cout << "Error en localias inversas equipos " << i+1 << " y " << rival_primera_rueda << endl;
-                            contador_errores_localias_inversas++;
-                        }
+    //revisando que las localias esten invertidas por equipos
+    for (int i = 0; i < 20; i++){
+        for (int j = 0; j < 19; j++){ //rueda1
+            int rival_primera_rueda = abs(rueda1_SA[i][j]);
+            for (int k = 0; k < 19; k++){ // rueda2
+                if (abs(rueda2_SA[i][k]) == rival_primera_rueda){
+                    if (rueda1_SA[i][j] > 0 && rueda2_SA[i][k] > 0 || rueda1_SA[i][j] < 0 && rueda2_SA[i][k] < 0){
+                        cout << "Error en localias inversas equipos " << i+1 << " y " << rival_primera_rueda << endl;
+                        contador_errores_localias_inversas++;
                     }
                 }
             }
         }
-
-        cout << "\nErrores encontrados: " << contador_errores_localias_inversas << endl;
-
-        int contador_errores_sumatoria_columna = 0;
-        int suma_col;
-
-        //rueda 1
-        for (int i = 0; i < 19; i++){ // por fecha
-            suma_col = 0;
-            for (int j = 0; j < 20; j++){ // por equipo
-                suma_col += abs(rueda1_SA[j][i]);
-            }
-            if (suma_col != 210){
-                cout << "Error en la suma de la fecha " << i+1 << endl;
-                contador_errores_sumatoria_columna++;
-            }
-        }
-
-        //rueda 2
-        for (int i = 0; i < 19; i++){ // por fecha
-            suma_col = 0;
-            for (int j = 0; j < 20; j++){ // por equipo
-                suma_col += abs(rueda2_SA[j][i]);
-            }
-            if (suma_col != 210){
-                cout << "Error en la suma de la fecha " << i+20 << endl;
-                contador_errores_sumatoria_columna++;
-            }
-        }
-
-        cout << "Errores encontrados suma fecha: " << contador_errores_sumatoria_columna << endl;
-
-        //revision de que en cada rueda un equipo se enfrente a todos los demas
-        vector<int> equipos_enfrentados = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-        for (int i = 0; i <20; i++){
-            //rueda 1
-            vector<int> rivales_aux = equipos_enfrentados;
-            auto it = std::find(rivales_aux.begin(), rivales_aux.end(), i+1); 
-            if (it != rivales_aux.end()) { 
-                rivales_aux.erase(it); 
-            }
-            for(int j = 0; j < 19; j++){
-                auto it2 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda1_SA[i][j])); 
-                if (it2 != rivales_aux.end()) { 
-                    rivales_aux.erase(it2); 
-                }
-            }
-            if (rivales_aux.size() != 0){
-                cout << "Error en rueda 1, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
-            }
-            //rueda 2
-            rivales_aux = equipos_enfrentados;
-            auto it3 = std::find(rivales_aux.begin(), rivales_aux.end(), i+1);
-            if (it3 != rivales_aux.end()) { 
-                rivales_aux.erase(it3); 
-            }
-            for(int j = 0; j < 19; j++){
-                auto it4 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda2_SA[i][j])); 
-                if (it4 != rivales_aux.end()) { 
-                    rivales_aux.erase(it4); 
-                }
-            }
-            if (rivales_aux.size() != 0){
-                cout << "Error en rueda 2, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
-            }
-        }
-
-        //revision de consistencia por fecha
-        // si i juega contra j, entonces j debe jugar contra i (ademas los signos deben ser contrarios)
-
-        int error_consistencia_fecha = 0;
-
-        //revisando rueda 1
-        for (int j = 0; j < 19; j++){
-            for (int i = 0; i < 20; i++){
-                int rival = abs(rueda1_SA[i][j]);
-
-                // rival debe jugar contra i+1
-                if(abs(rueda1_SA[rival-1][j]) != i+1){
-                    cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
-                    error_consistencia_fecha++; 
-                }
-
-                // signos deben ser contrarios    
-                if (rueda1_SA[i][j] > 0 && rueda1_SA[rival-1][j] > 0 || rueda1_SA[i][j] < 0 && rueda1_SA[rival-1][j] < 0){
-                    cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
-                    error_consistencia_fecha++;
-                }
-            }
-        }
-
-        //revisando rueda 2
-        for (int j = 0; j < 19; j++){
-            for (int i = 0; i < 20; i++){
-                int rival = abs(rueda2_SA[i][j]);
-                // rival debe jugar contra i+1
-                if(abs(rueda2_SA[rival-1][j]) != i+1){
-                    cout << "Error en consistencia de fecha " << j+20 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
-                    error_consistencia_fecha++; 
-                }
-
-                // signos deben ser contrarios    
-                if (rueda2_SA[i][j] > 0 && rueda2_SA[rival-1][j] > 0 || rueda2_SA[i][j] < 0 && rueda2_SA[rival-1][j] < 0){
-                    cout << "Error en consistencia de fecha " << j+20 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
-                    error_consistencia_fecha++;
-                }
-            }
-        }
-        
-        cout << "Errores en consistencia de fecha: " << error_consistencia_fecha << endl;
-        
-        /*
-        cout << "Aplicando Hill Climbing mejor mejora con solucion de TS" << endl;
-
-        vector<vector<vector<int>>> ruedas_HCMM_SA = hill_climbing_epl_mejor_mejora(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_SA, rueda2_SA, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
-
-        int evaluacion_actual_HCMM_SA = funcion_evaluacion_epl(distancia_optima, fecha_boxing_day, fecha_new_year, ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
-        int distancia_total_HCMM_SA = distancia_festivos(ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], distancias, fecha_boxing_day, fecha_new_year);
-
-        cout << "\nFixture HCMM_TS" << endl;
-        cout << "Distancia total: " << distancia_total_HCMM_SA << endl;
-        cout << "Valor evaluacion: " << evaluacion_actual_HCMM_SA << endl;
-        cout << "\n";
-
-        print_calendarizacion(ruedas_HCMM_SA[0], ruedas_HCMM_SA[1]);
-
-        print_costo_restricciones_epl(distancia_optima, fecha_boxing_day, fecha_new_year, ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias);
-        */
     }
 
+    cout << "\nErrores encontrados: " << contador_errores_localias_inversas << endl;
+
+    int contador_errores_sumatoria_columna = 0;
+    int suma_col;
+
+    //rueda 1
+    for (int i = 0; i < 19; i++){ // por fecha
+        suma_col = 0;
+        for (int j = 0; j < 20; j++){ // por equipo
+            suma_col += abs(rueda1_SA[j][i]);
+        }
+        if (suma_col != 210){
+            cout << "Error en la suma de la fecha " << i+1 << endl;
+            contador_errores_sumatoria_columna++;
+        }
+    }
+
+    //rueda 2
+    for (int i = 0; i < 19; i++){ // por fecha
+        suma_col = 0;
+        for (int j = 0; j < 20; j++){ // por equipo
+            suma_col += abs(rueda2_SA[j][i]);
+        }
+        if (suma_col != 210){
+            cout << "Error en la suma de la fecha " << i+20 << endl;
+            contador_errores_sumatoria_columna++;
+        }
+    }
+
+    cout << "Errores encontrados suma fecha: " << contador_errores_sumatoria_columna << endl;
+
+    //revision de que en cada rueda un equipo se enfrente a todos los demas
+    vector<int> equipos_enfrentados = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+    for (int i = 0; i <20; i++){
+        //rueda 1
+        vector<int> rivales_aux = equipos_enfrentados;
+        auto it = std::find(rivales_aux.begin(), rivales_aux.end(), i+1); 
+        if (it != rivales_aux.end()) { 
+            rivales_aux.erase(it); 
+        }
+        for(int j = 0; j < 19; j++){
+            auto it2 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda1_SA[i][j])); 
+            if (it2 != rivales_aux.end()) { 
+                rivales_aux.erase(it2); 
+            }
+        }
+        if (rivales_aux.size() != 0){
+            cout << "Error en rueda 1, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
+        }
+        //rueda 2
+        rivales_aux = equipos_enfrentados;
+        auto it3 = std::find(rivales_aux.begin(), rivales_aux.end(), i+1);
+        if (it3 != rivales_aux.end()) { 
+            rivales_aux.erase(it3); 
+        }
+        for(int j = 0; j < 19; j++){
+            auto it4 = std::find(rivales_aux.begin(), rivales_aux.end(), abs(rueda2_SA[i][j])); 
+            if (it4 != rivales_aux.end()) { 
+                rivales_aux.erase(it4); 
+            }
+        }
+        if (rivales_aux.size() != 0){
+            cout << "Error en rueda 2, equipo " << i+1 << " no se enfrenta a todos los demas" << endl;
+        }
+    }
+
+    //revision de consistencia por fecha
+    // si i juega contra j, entonces j debe jugar contra i (ademas los signos deben ser contrarios)
+
+    int error_consistencia_fecha = 0;
+
+    //revisando rueda 1
+    for (int j = 0; j < 19; j++){
+        for (int i = 0; i < 20; i++){
+            int rival = abs(rueda1_SA[i][j]);
+
+            // rival debe jugar contra i+1
+            if(abs(rueda1_SA[rival-1][j]) != i+1){
+                cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
+                error_consistencia_fecha++; 
+            }
+
+            // signos deben ser contrarios    
+            if (rueda1_SA[i][j] > 0 && rueda1_SA[rival-1][j] > 0 || rueda1_SA[i][j] < 0 && rueda1_SA[rival-1][j] < 0){
+                cout << "Error en consistencia de fecha " << j+1 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
+                error_consistencia_fecha++;
+            }
+        }
+    }
+
+    //revisando rueda 2
+    for (int j = 0; j < 19; j++){
+        for (int i = 0; i < 20; i++){
+            int rival = abs(rueda2_SA[i][j]);
+            // rival debe jugar contra i+1
+            if(abs(rueda2_SA[rival-1][j]) != i+1){
+                cout << "Error en consistencia de fecha " << j+20 << " entre equipos " << i+1 << " y " << rival << ", el equipo " << rival << " no enfrenta a " << i+1 << endl;
+                error_consistencia_fecha++; 
+            }
+
+            // signos deben ser contrarios    
+            if (rueda2_SA[i][j] > 0 && rueda2_SA[rival-1][j] > 0 || rueda2_SA[i][j] < 0 && rueda2_SA[rival-1][j] < 0){
+                cout << "Error en consistencia de fecha " << j+20 << " entre equipos " << i+1 << " y " << rival << ", ambos tienen la misma condicion" << endl;
+                error_consistencia_fecha++;
+            }
+        }
+    }
     
-    
-    return 0;
+    cout << "Errores en consistencia de fecha: " << error_consistencia_fecha << endl;
+    */
 } 

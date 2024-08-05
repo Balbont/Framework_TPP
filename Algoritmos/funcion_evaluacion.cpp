@@ -201,39 +201,92 @@ void print_costo_restricciones_epl(int distiancia_optima, int fecha_boxing_day, 
         cout << "(C19) Distancia enfrentarse nuevamente: " << distancia_fecha_enfrentarse_nuevamente(rueda1, rueda2, 12)*peso_cant_fechas_rival_nuevamente/2 << endl;
 }
 
-int funcion_evaluacion_pdc(vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
+int funcion_evaluacion_pdc(int enfoque,vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
     vector<int> equipos_sudamericana, vector<int> equipos_zona_norte, vector<int> equipos_zona_centro, vector<int> equipos_zona_sur, vector<int> equipos_zona_vacaciones, vector<int> equipos_santiago,
     vector<int> fechas_previas_prelibertadores, vector<int> fechas_posteriores_prelibertadores, vector<int> fechas_previas_libertadores, vector<int> fechas_posteriores_libertadores, vector<int> fechas_previas_sudamericana,
     vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante){
 
-    //Copiando pesos de la variante EPL para las restricciones comunes o similares
-
     int evaluacion = 0;
 
+    //PESOS FIJOS
     int peso_solicitudes_no_jugar_como_local = 60; //C04
     int peso_break_primeras_ultimas_fechas = 90; //C12a y C12b
     int peso_maximo_3partidos_local_visitante = 100; //C13 y C14
     int peso_cant_fechas_rival_nuevamente = 60; //C19
-
-    int peso_equipos_fuertes_previa_prelibertadores = 15; //C208a
-    int peso_equipos_fuertes_posterior_prelibertadores = 15; //C208b
-    int peso_equipos_fuertes_previa_libertadores = 60; //C208c
-    int peso_equipos_fuertes_posterior_libertadores = 55; //C208d
-    int peso_equipos_fuertes_previa_sudamericana = 20; //C208e
-    int peso_equipos_fuertes_posterior_sudamericana = 20; //C208f
-
-    int peso_equipos_zonas = 50; //C205a, C205b, C205c
-    int peso_equipos_fuertes_primeras_ultimas_fechas = 80; //C203
-
-    int peso_localias_clasicos = 100; //C204
-
     int peso_enfrentamientos_consecutivos_fuertes = 70; //C201
-
-    int peso_vacaciones_equipos_fuertes = 30; //C207
-
-    int peso_partidos_santiago = 50; //C207
-
     int peso_balance_localias_rueda = 200; //C202
+
+    //PESOS VARIABLES
+
+    //clasicos
+    int peso_equipos_fuertes_primeras_ultimas_fechas; //C203
+    int peso_localias_clasicos; //C204
+
+    //zonas
+    int peso_equipos_zonas; //C205a, C205b, C205c
+    int peso_vacaciones_equipos_fuertes; //C207
+    int peso_partidos_santiago; //C206
+
+    //torneos internacionales
+    int peso_equipos_fuertes_previa_prelibertadores; //C208a
+    int peso_equipos_fuertes_posterior_prelibertadores; //C208b
+    int peso_equipos_fuertes_previa_libertadores; //C208c
+    int peso_equipos_fuertes_posterior_libertadores; //C208d
+    int peso_equipos_fuertes_previa_sudamericana; //C208e
+    int peso_equipos_fuertes_posterior_sudamericana; //C208f
+
+    if(enfoque == 1){ //Balanceado
+        peso_equipos_fuertes_primeras_ultimas_fechas = 80; //C203
+        peso_localias_clasicos = 100; //C204
+        peso_equipos_zonas = 50; //C205a, C205b, C205c
+        peso_partidos_santiago = 50; //C206
+        peso_vacaciones_equipos_fuertes = 30; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 15; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 15; //C208b
+        peso_equipos_fuertes_previa_libertadores = 60; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 55; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 20; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 20; //C208f
+    }
+    else if (enfoque == 2){ //Clasicos
+        peso_equipos_fuertes_primeras_ultimas_fechas = 184; //C203
+        peso_localias_clasicos = 204; //C204
+        peso_equipos_zonas = 25; //C205a, C205b, C205c
+        peso_partidos_santiago = 25; //C206
+        peso_vacaciones_equipos_fuertes = 15; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 8; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 8; //C208b
+        peso_equipos_fuertes_previa_libertadores = 30; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 28; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 10; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 10; //C208f
+    }
+    else if (enfoque == 3){ //Zonas
+        peso_equipos_fuertes_primeras_ultimas_fechas = 40; //C203
+        peso_localias_clasicos = 50; //C204
+        peso_equipos_zonas = 87; //C205a, C205b, C205c
+        peso_partidos_santiago = 87; //C206
+        peso_vacaciones_equipos_fuertes = 67; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 8; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 8; //C208b
+        peso_equipos_fuertes_previa_libertadores = 30; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 28; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 10; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 10; //C208f
+    }
+    else if (enfoque == 4){ //Torneos internacionales
+        peso_equipos_fuertes_primeras_ultimas_fechas = 40; //C203
+        peso_localias_clasicos = 50; //C204
+        peso_equipos_zonas = 25; //C205a, C205b, C205c
+        peso_partidos_santiago = 25; //C206
+        peso_vacaciones_equipos_fuertes = 15; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 49; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 49; //C208b
+        peso_equipos_fuertes_previa_libertadores = 94; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 89; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 54; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 54; //C208f
+    }
 
     //generando vectores para solicitudes de no jugar como local
     vector<int> aux_equipos_solicitud_visitante;
@@ -258,7 +311,6 @@ int funcion_evaluacion_pdc(vector<vector<int>> rueda1, vector<vector<int>> rueda
     }
     cout << endl;
     */
-    
 
     // ejemplos peso torneos internacionales
     //int peso_equipos_fuertes_previa_UCL = 45; //C102c
@@ -330,35 +382,90 @@ int funcion_evaluacion_pdc(vector<vector<int>> rueda1, vector<vector<int>> rueda
     return evaluacion;
 }
 
-void print_costo_restricciones_pdc(vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
+void print_costo_restricciones_pdc(int enfoque,vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
     vector<int> equipos_sudamericana, vector<int> equipos_zona_norte, vector<int> equipos_zona_centro, vector<int> equipos_zona_sur, vector<int> equipos_zona_vacaciones, vector<int> equipos_santiago,
     vector<int> fechas_previas_prelibertadores, vector<int> fechas_posteriores_prelibertadores, vector<int> fechas_previas_libertadores, vector<int> fechas_posteriores_libertadores, vector<int> fechas_previas_sudamericana,
     vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante){
 
+    //PESOS FIJOS
     int peso_solicitudes_no_jugar_como_local = 60; //C04
     int peso_break_primeras_ultimas_fechas = 90; //C12a y C12b
     int peso_maximo_3partidos_local_visitante = 100; //C13 y C14
     int peso_cant_fechas_rival_nuevamente = 60; //C19
-
-    int peso_equipos_fuertes_previa_prelibertadores = 15; //C208a
-    int peso_equipos_fuertes_posterior_prelibertadores = 15; //C208b
-    int peso_equipos_fuertes_previa_libertadores = 60; //C208c
-    int peso_equipos_fuertes_posterior_libertadores = 55; //C208d
-    int peso_equipos_fuertes_previa_sudamericana = 20; //C208e
-    int peso_equipos_fuertes_posterior_sudamericana = 20; //C208f
-
-    int peso_equipos_zonas = 50; //C205a, C205b, C205c
-    int peso_equipos_fuertes_primeras_ultimas_fechas = 80; //C203
-
-    int peso_localias_clasicos = 100; //C204
-
     int peso_enfrentamientos_consecutivos_fuertes = 70; //C201
-
-    int peso_vacaciones_equipos_fuertes = 30; //C207
-
-    int peso_partidos_santiago = 50; //C207
-
     int peso_balance_localias_rueda = 200; //C202
+
+    //PESOS VARIABLES
+
+    //clasicos
+    int peso_equipos_fuertes_primeras_ultimas_fechas; //C203
+    int peso_localias_clasicos; //C204
+
+    //zonas
+    int peso_equipos_zonas; //C205a, C205b, C205c
+    int peso_vacaciones_equipos_fuertes; //C207
+    int peso_partidos_santiago; //C206
+
+    //torneos internacionales
+    int peso_equipos_fuertes_previa_prelibertadores; //C208a
+    int peso_equipos_fuertes_posterior_prelibertadores; //C208b
+    int peso_equipos_fuertes_previa_libertadores; //C208c
+    int peso_equipos_fuertes_posterior_libertadores; //C208d
+    int peso_equipos_fuertes_previa_sudamericana; //C208e
+    int peso_equipos_fuertes_posterior_sudamericana; //C208f
+
+    if(enfoque == 1){ //Balanceado
+        peso_equipos_fuertes_primeras_ultimas_fechas = 80; //C203
+        peso_localias_clasicos = 100; //C204
+        peso_equipos_zonas = 50; //C205a, C205b, C205c
+        peso_partidos_santiago = 50; //C206
+        peso_vacaciones_equipos_fuertes = 30; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 15; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 15; //C208b
+        peso_equipos_fuertes_previa_libertadores = 60; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 55; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 20; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 20; //C208f
+    }
+    else if (enfoque == 2){ //Clasicos
+        peso_equipos_fuertes_primeras_ultimas_fechas = 184; //C203
+        peso_localias_clasicos = 204; //C204
+        peso_equipos_zonas = 25; //C205a, C205b, C205c
+        peso_partidos_santiago = 25; //C206
+        peso_vacaciones_equipos_fuertes = 15; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 8; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 8; //C208b
+        peso_equipos_fuertes_previa_libertadores = 30; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 28; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 10; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 10; //C208f
+    }
+    else if (enfoque == 3){ //Zonas
+        peso_equipos_fuertes_primeras_ultimas_fechas = 40; //C203
+        peso_localias_clasicos = 50; //C204
+        peso_equipos_zonas = 87; //C205a, C205b, C205c
+        peso_partidos_santiago = 87; //C206
+        peso_vacaciones_equipos_fuertes = 67; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 8; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 8; //C208b
+        peso_equipos_fuertes_previa_libertadores = 30; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 28; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 10; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 10; //C208f
+    }
+    else if (enfoque == 4){ //Torneos internacionales
+        peso_equipos_fuertes_primeras_ultimas_fechas = 40; //C203
+        peso_localias_clasicos = 50; //C204
+        peso_equipos_zonas = 25; //C205a, C205b, C205c
+        peso_partidos_santiago = 25; //C206
+        peso_vacaciones_equipos_fuertes = 15; //C207
+        peso_equipos_fuertes_previa_prelibertadores = 49; //C208a
+        peso_equipos_fuertes_posterior_prelibertadores = 49; //C208b
+        peso_equipos_fuertes_previa_libertadores = 94; //C208c
+        peso_equipos_fuertes_posterior_libertadores = 89; //C208d
+        peso_equipos_fuertes_previa_sudamericana = 54; //C208e
+        peso_equipos_fuertes_posterior_sudamericana = 54; //C208f
+    }
 
     //generando vectores para solicitudes de no jugar como local
     vector<int> aux_equipos_solicitud_visitante;

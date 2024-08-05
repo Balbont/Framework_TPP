@@ -852,7 +852,7 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
 
 // ------------------------------------------------------------ FUNCIONES FUTBOL CHILENO ------------------------------------------------------------
 
-vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
+vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
     vector<int> equipos_sudamericana, vector<int> equipos_zona_norte, vector<int> equipos_zona_centro, vector<int> equipos_zona_sur, vector<int> equipos_zona_vacaciones, vector<int> equipos_santiago,
     vector<int> fechas_previas_prelibertadores, vector<int> fechas_posteriores_prelibertadores, vector<int> fechas_previas_libertadores, vector<int> fechas_posteriores_libertadores, vector<int> fechas_previas_sudamericana,
     vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante, vector<int> largo_listas_equipos, vector<int> largo_listas_fechas, vector<vector<int>> probabilidades_operadores_fases, int numero_iteraciones){
@@ -861,7 +861,7 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
 
     vector<vector<int>> mejor_rueda1_global, mejor_rueda2_global, rueda1_actual, rueda2_actual, rueda1_aux, rueda2_aux,mejor_rueda1_iteracion, mejor_rueda2_iteracion;
 
-    int evaluacion_actual = funcion_evaluacion_pdc(rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+    int evaluacion_actual = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -930,7 +930,7 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
                         rueda1_aux = SwapHomes(rueda1_actual, i, j);
                         rueda2_aux = SwapHomes(rueda2_actual, i, j);
 
-                        nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                        nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                         equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                         fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -963,7 +963,7 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
                         rueda2_aux = SwapTeams(rueda2_actual, i, j);
                         
 
-                        nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                        nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                         equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                         fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1010,7 +1010,7 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
                                 rueda2_aux = SwapRounds(rueda2_actual, i, j);
                             }
 
-                            nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1066,7 +1066,7 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
                                     rueda2_aux = ruedas_reparadas[1];
                                 }
 
-                                nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                                nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                                 equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                                 fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1140,7 +1140,7 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
 
                                 //cout << "Post SwapMatchRound" << endl;
 
-                                nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                                nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                                 equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                                 fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1243,12 +1243,12 @@ vector<vector<vector<int>>> tabu_search_pdc(vector<vector<int>> rueda1, vector<v
     return ruedas;
 }
 
-vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
+vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
     vector<int> equipos_sudamericana, vector<int> equipos_zona_norte, vector<int> equipos_zona_centro, vector<int> equipos_zona_sur, vector<int> equipos_zona_vacaciones, vector<int> equipos_santiago,
     vector<int> fechas_previas_prelibertadores, vector<int> fechas_posteriores_prelibertadores, vector<int> fechas_previas_libertadores, vector<int> fechas_posteriores_libertadores, vector<int> fechas_previas_sudamericana,
     vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante, int temperatura_inicial, int numero_iteraciones, float tasa_cambio_temperatura, int numero_cambios_temperatura){
 
-        int mejor_evaluacion_global = funcion_evaluacion_pdc(rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+        int mejor_evaluacion_global = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1304,7 +1304,7 @@ vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int
                     rueda1_aux = SwapHomes(rueda1_actual, equipo_1, equipo_2);
                     rueda2_aux = SwapHomes(rueda2_actual, equipo_1, equipo_2);
 
-                    nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                    nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1330,7 +1330,7 @@ vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int
                         rueda1_aux = SwapTeams(rueda1_actual, equipo_1, equipo_2);
                         rueda2_aux = SwapTeams(rueda2_actual, equipo_1, equipo_2);
                         
-                        nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                        nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1360,7 +1360,7 @@ vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int
                         rueda2_aux = SwapRounds(rueda2_actual, fecha_1, fecha_2);
                     }
 
-                    nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                    nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1406,7 +1406,7 @@ vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int
                         rueda2_aux = ruedas_reparadas[1];
                     }
 
-                    nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                    nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1453,7 +1453,7 @@ vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int
                         rueda2_aux = ruedas_reparadas[1];
                     }
 
-                    nueva_evaluacion = funcion_evaluacion_pdc(rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                    nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1_aux, rueda2_aux, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
                             fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -1531,3 +1531,190 @@ vector<vector<vector<int>>> sa_pdc(vector<vector<int>> rueda1, vector<vector<int
         return ruedas;
 }
 
+vector<vector<vector<int>>> hc_pdc(int enfoque, vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
+    vector<int> equipos_sudamericana, vector<int> equipos_zona_norte, vector<int> equipos_zona_centro, vector<int> equipos_zona_sur, vector<int> equipos_zona_vacaciones, vector<int> equipos_santiago,
+    vector<int> fechas_previas_prelibertadores, vector<int> fechas_posteriores_prelibertadores, vector<int> fechas_previas_libertadores, vector<int> fechas_posteriores_libertadores, vector<int> fechas_previas_sudamericana,
+    vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante, int temperatura_inicial, int numero_iteraciones, float tasa_cambio_temperatura, int numero_cambios_temperatura){
+
+    int mejor_evaluacion_global = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
+                            fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    vector<vector<int>> mejor_rueda1_global, mejor_rueda2_global, mejor_rueda1_iteracion, mejor_rueda2_iteracion, rueda1_aux, rueda2_aux;
+
+    vector<vector<vector<int>>> ruedas_reparadas;
+
+    int nueva_evaluacion;
+
+    mejor_rueda1_global = rueda1;
+    mejor_rueda2_global = rueda2;
+
+    bool mejora = true;
+    while (mejora == true){
+
+        int mejor_evaluacion_iteracion = 1000000;
+
+        //aplicar todos los operadores a la rueda actual y comparar con mejor evaluacion iteracion
+
+        //todos los SwapHomes
+        for (int i = 1; i <= 15; i++){
+            for (int j = i+1; j<=16; j++){
+
+                rueda1_aux = SwapHomes(mejor_rueda1_global, i, j);
+                rueda2_aux = SwapHomes(mejor_rueda2_global, i, j);
+
+                nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
+                            fechas_posteriores_sudamericana, solicituedes_visitante);
+
+                if (nueva_evaluacion < mejor_evaluacion_iteracion){
+                    mejor_evaluacion_iteracion = nueva_evaluacion;
+                    mejor_rueda1_iteracion = rueda1_aux;
+                    mejor_rueda2_iteracion = rueda2_aux;
+                }
+            }
+        }
+
+        //todos los SwapTeams
+        for (int i = 1; i <= 15; i++){
+            for (int j = i+1; j<=16; j++){
+
+                rueda1_aux = SwapTeams(mejor_rueda1_global, i, j);
+                rueda2_aux = SwapTeams(mejor_rueda2_global, i, j);
+                
+                nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
+                            fechas_posteriores_sudamericana, solicituedes_visitante);
+
+                if (nueva_evaluacion < mejor_evaluacion_iteracion){
+                    mejor_evaluacion_iteracion = nueva_evaluacion;
+                    mejor_rueda1_iteracion = rueda1_aux;
+                    mejor_rueda2_iteracion = rueda2_aux;
+                }
+            }
+        }
+
+        //todos los SwapRounds
+        for (int i = 1; i <= 14; i++){
+            for (int j = i+1; j<=15; j++){
+                for(int k = 0; k<2; k++){
+
+                    if(k==0){
+                        rueda1_aux = SwapRounds(mejor_rueda1_global, i, j);
+                        rueda2_aux = mejor_rueda2_global;
+                    }
+                    else{
+                        rueda1_aux = mejor_rueda1_global;
+                        rueda2_aux = SwapRounds(mejor_rueda2_global, i, j);
+                    }
+
+                    nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
+                            fechas_posteriores_sudamericana, solicituedes_visitante);
+
+                    if (nueva_evaluacion < mejor_evaluacion_iteracion){
+                        mejor_evaluacion_iteracion = nueva_evaluacion;
+                        mejor_rueda1_iteracion = rueda1_aux;
+                        mejor_rueda2_iteracion = rueda2_aux;
+                    }
+                }
+            }
+        }
+
+        //todos los SwapMatches
+        for(int i=1; i <= 15;i++){ //t1
+            for(int j = i+1; j<= 16; j++){ //t2
+                for (int k = 1; k <= 15; k++){ //fecha
+                    for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){ // rueda
+
+                        //cout << "SwapMatches equipo1:" << i << " equipo 2 " << j << " fecha: " << k << " rueda " << rueda_elegida << endl;
+
+                        if (rueda_elegida == 1){
+                            rueda1_aux = SwapMatches(mejor_rueda1_global, i, j, k);
+
+                            ruedas_reparadas = reparacion_ambas_ruedas_v2(rueda1_aux, mejor_rueda2_global);
+
+                            rueda1_aux = ruedas_reparadas[0];
+                            rueda2_aux = ruedas_reparadas[1];
+                        }
+                        else{
+                            rueda2_aux = SwapMatches(mejor_rueda2_global, i, j, k);
+
+                            ruedas_reparadas = reparacion_ambas_ruedas_v2(mejor_rueda1_global, rueda2_aux);
+
+                            rueda1_aux = ruedas_reparadas[0];
+                            rueda2_aux = ruedas_reparadas[1];
+                        }
+
+                        nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
+                            fechas_posteriores_sudamericana, solicituedes_visitante);
+
+                        if (nueva_evaluacion < mejor_evaluacion_iteracion){
+                            mejor_evaluacion_iteracion = nueva_evaluacion;
+                            mejor_rueda1_iteracion = rueda1_aux;
+                            mejor_rueda2_iteracion = rueda2_aux;
+                        }
+                    }
+                }
+            }
+        }
+
+        //todos los SwapMatchRound
+        for(int i = 1; i<=15; i++){
+            for(int j = 1; j <= 16; j++){
+                for(int k = j+1; k <= 15; k++){
+                    for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
+                
+                        if (rueda_elegida == 1){
+                            rueda1_aux = SwapMatchRound(mejor_rueda1_global, i, j, k);
+
+                            ruedas_reparadas = reparacion_ambas_ruedas_v2(rueda1_aux, mejor_rueda2_global);
+
+                            rueda1_aux = ruedas_reparadas[0];
+                            rueda2_aux = ruedas_reparadas[1];
+                        }
+                        else{
+                            rueda2_aux = SwapMatchRound(mejor_rueda2_global, i, j, k);
+
+                            ruedas_reparadas = reparacion_ambas_ruedas_v2(mejor_rueda1_global, rueda2_aux);
+
+                            rueda1_aux = ruedas_reparadas[0];
+                            rueda2_aux = ruedas_reparadas[1];
+                        }
+
+                        nueva_evaluacion = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
+                            equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
+                            fechas_posteriores_sudamericana, solicituedes_visitante);
+
+                        if (nueva_evaluacion < mejor_evaluacion_iteracion){
+                            mejor_evaluacion_iteracion = nueva_evaluacion;
+                            mejor_rueda1_iteracion = rueda1_aux;
+                            mejor_rueda2_iteracion = rueda2_aux;
+                        }
+                    }
+                }
+            }
+        }
+
+        //revisar si hubo mejora
+
+        if (mejor_evaluacion_iteracion < mejor_evaluacion_global){
+            mejor_rueda1_global = mejor_rueda1_iteracion;
+            mejor_rueda2_global = mejor_rueda2_iteracion;
+            mejor_evaluacion_global = mejor_evaluacion_iteracion;
+            cout << "Mejora encontrada HCMM" << endl;
+        }
+        else{
+            mejora = false;
+        }
+    }
+
+    vector<vector<vector<int>>> ruedas;
+
+    ruedas.push_back(mejor_rueda1_global);
+    ruedas.push_back(mejor_rueda2_global);
+
+    return ruedas;
+
+}

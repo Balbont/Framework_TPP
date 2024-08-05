@@ -8,11 +8,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void pdc_ts(){
+void pdc_ts(int enfoque_pdc){
 
     //Parametros TS PDC
 
-    int iteraciones = 1000;
+    int iteraciones = 100;
     vector<int> largos_listas_equipos = {8,4,2}; //largos en cada fase
     vector<int> largos_listas_fechas = {12,6,3}; //largos en cada fase
     vector<vector<int>>  probabilidades_operadores = {{10,10,10,35,35},{20,20,20,20,20},{26,27,27,10,10}}; //probalidades en cada fase
@@ -230,14 +230,14 @@ void pdc_ts(){
     vector<vector<int>> rueda2_inicial = generacion_rueda_mirrored(rueda1_inicial);
 
     // calendarizacion generada con TS
-    vector<vector<vector<int>>> ruedas_TS = tabu_search_pdc(rueda1_inicial, rueda2_inicial, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+    vector<vector<vector<int>>> ruedas_TS = tabu_search_pdc(enfoque_pdc, rueda1_inicial, rueda2_inicial, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante, largos_listas_equipos, largos_listas_fechas, probabilidades_operadores, iteraciones);
 
     vector<vector<int>> rueda1_TS = ruedas_TS[0];
     vector<vector<int>> rueda2_TS = ruedas_TS[1];
     
-    int evaluacion_actual_TS = funcion_evaluacion_pdc(rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+    int evaluacion_actual_TS = funcion_evaluacion_pdc(enfoque_pdc, rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
     
@@ -246,7 +246,7 @@ void pdc_ts(){
     cout << "Valor evaluacion: " << evaluacion_actual_TS << endl;
     cout << "\nCosto restricciones: " << endl;
 
-    print_costo_restricciones_pdc(rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
+    print_costo_restricciones_pdc(enfoque_pdc, rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores,
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
     cout << "\n";
@@ -425,14 +425,14 @@ void pdc_ts(){
     */
 }
 
-void pdc_sa(){
+void pdc_sa(int enfoque_pdc){
 
     // Parametros SA PDC
 
     int tempertura = 1000;
     float tasa_enfriamiento = 0.8; 
     int cambios_temperatura = 5;
-    int cantidad_iteraciones = 1000;
+    int cantidad_iteraciones = 100;
 
     //Parametros instancia
 
@@ -647,14 +647,14 @@ void pdc_sa(){
     vector<vector<int>> rueda2_inicial = generacion_rueda_mirrored(rueda1_inicial);
 
     // calendarizacion generada con SA
-    vector<vector<vector<int>>> ruedas_SA = sa_pdc(rueda1_inicial, rueda2_inicial, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+    vector<vector<vector<int>>> ruedas_SA = sa_pdc(enfoque_pdc, rueda1_inicial, rueda2_inicial, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante, tempertura, cantidad_iteraciones, tasa_enfriamiento, cambios_temperatura);
 
     vector<vector<int>> rueda1_SA = ruedas_SA[0];
     vector<vector<int>> rueda2_SA = ruedas_SA[1];
     
-    int evaluacion_actual_SA = funcion_evaluacion_pdc(rueda1_SA, rueda2_SA, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+    int evaluacion_actual_SA = funcion_evaluacion_pdc(enfoque_pdc, rueda1_SA, rueda2_SA, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
 
@@ -663,7 +663,7 @@ void pdc_sa(){
     cout << "Valor evaluacion: " << evaluacion_actual_SA << endl;
 
     cout << "\nCosto de restricciones" << endl;
-    print_costo_restricciones_pdc(rueda1_SA, rueda2_SA, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
+    print_costo_restricciones_pdc(enfoque_pdc, rueda1_SA, rueda2_SA, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores,
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
 

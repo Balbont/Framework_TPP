@@ -78,41 +78,58 @@ int main() {
 
         if (enfoque_pdc ==1){
             if (metodo_solucion == 1) {
-                //TTP_PDC_SA();
-                cout << "TTP_PDC_SA Balanceado" << endl;
+
+                cout << "Calendarizando PDC enfoque balanceado con Simulated Annealing\n" << endl;
+                pdc_sa(enfoque_pdc);
+
+
             } else if (metodo_solucion == 2) {
-                //TTP_PDC_TS();
-                cout << "TTP_PDC_TS Balanceado" << endl;
+                
+                cout << "Calendarizando PDC enfoque balanceado con Tabu Search\n" << endl;
+                pdc_ts(enfoque_pdc);
+
             } else {
                 cout << "Opcion no valida" << endl;
             }
         } else if (enfoque_pdc ==2){
             if (metodo_solucion == 1) {
-                //TTP_PDC_SA();
-                cout << "TTP_PDC_SA Clasicos" << endl;
+
+                cout << "Calendarizando PDC enfoque clasicos con Simulated Annealing\n" << endl;
+                pdc_sa(enfoque_pdc);
+
             } else if (metodo_solucion == 2) {
-                //TTP_PDC_TS();
-                cout << "TTP_PDC_TS Clasicos" << endl;
+
+                cout << "Calendarizando PDC enfoque clasicos con Tabu Search\n" << endl;
+                pdc_ts(enfoque_pdc);
+
             } else {
                 cout << "Opcion no valida" << endl;
             }
         } else if (enfoque_pdc ==3){
             if (metodo_solucion == 1) {
-                //TTP_PDC_SA();
-                cout << "TTP_PDC_SA Zonas" << endl;
+                
+                cout << "Calendarizando PDC enfoque zonas con Simulated Annealing\n" << endl;
+                pdc_sa(enfoque_pdc);
+
             } else if (metodo_solucion == 2) {
-                //TTP_PDC_TS();
-                cout << "TTP_PDC_TS Zonas" << endl;
+
+                cout << "Calendarizando PDC enfoque zonas con Tabu Search\n" << endl;
+                pdc_ts(enfoque_pdc);
+
             } else {
                 cout << "Opcion no valida" << endl;
             }
         } else if (enfoque_pdc ==4){
             if (metodo_solucion == 1) {
-                //TTP_PDC_SA();
-                cout << "TTP_PDC_SA Torneos internacionales" << endl;
+
+                cout << "Calendarizando PDC enfoque torneos internacionales con Simulated Annealing\n" << endl;
+                pdc_sa(enfoque_pdc);
+
             } else if (metodo_solucion == 2) {
-                //TTP_PDC_TS();
-                cout << "TTP_PDC_TS Torneos internacionales" << endl;
+
+                cout << "Calendarizando PDC enfoque torneos internacionales con Tabu Search\n" << endl;
+                pdc_ts(enfoque_pdc);
+
             } else {
                 cout << "Opcion no valida" << endl;
             }

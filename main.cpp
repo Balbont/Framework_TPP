@@ -14,6 +14,8 @@ using namespace std;
 
 int main() {
 
+    revision_pdc_24();
+
     int liga;
     int metodo_solucion;
     int temporada_epl;

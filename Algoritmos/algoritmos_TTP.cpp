@@ -317,6 +317,7 @@ vector<vector<vector<int>>> tabu_search_epl(int distancia_optima, int fecha_boxi
         // fixture actual va a ser el mejor de la iteracion (no importa si empeora al fixture actual anterior)
         rueda1_actual = mejor_rueda1_iteracion;
         rueda2_actual = mejor_rueda2_iteracion;
+        evaluacion_actual = mejor_evaluacion_iteracion;
 
         //revisando si es la mejor solucion hasta el momento
         //cout << iter << ": Mejor evaluacion iteracion: " << mejor_evaluacion_iteracion << endl;
@@ -521,8 +522,8 @@ vector<vector<vector<int>>> hill_climbing_epl_mejor_mejora(int distancia_optima,
         }
 
         //todos los SwapMatchRound
-        for(int i = 1; i<=19; i++){
-            for(int j = 1; j <= 20; j++){
+        for(int i = 1; i<=20; i++){
+            for(int j = 1; j <= 18; j++){
                 for(int k = j+1; k <= 19; k++){
                     for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
                 
@@ -581,7 +582,7 @@ vector<vector<vector<int>>> hill_climbing_epl_mejor_mejora(int distancia_optima,
 vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, int fecha_new_year, vector<vector<int>> rueda1, vector<vector<int>> rueda2, vector<int> equipos_fuertes, vector<int> equipos_UCL, vector<int> equipos_UEL,
     vector<int> equipos_UECL, vector<int> equipos_emparejados, vector <int >fechas_previas_FA_Cup, vector<int> fechas_posteriores_FA_Cup, vector<int> fechas_previas_UCL,
     vector<int> fechas_posteriores_UCL, vector<int> fechas_previas_UEL, vector<int> fechas_posteriores_UEL, vector<int> fechas_previas_UECL, vector<int> fechas_posteriores_UECL, vector<int> fechas_bank_holidays, 
-    vector<vector<int>> solicituedes_visitante, vector<vector<int>> distancias, int temperatura_inicial, int numero_iteraciones, float tasa_cambio_temperatura, int numero_cambios_temperatura){
+    vector<vector<int>> solicituedes_visitante, vector<vector<int>> distancias, int temperatura_inicial, int numero_iteraciones, float tasa_cambio_temperatura, int numero_cambios_temperatura, int iteraciones_sin_mejora, float tasa_reheat){
 
     int mejor_evaluacion_global = funcion_evaluacion_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1, rueda2, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, 
                     fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, 
@@ -592,6 +593,8 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
     vector<vector<vector<int>>> ruedas_reparadas;
 
     int nueva_evaluacion;
+
+    int sin_mejora_global = 0;
 
     mejor_rueda1_global = rueda1;
     mejor_rueda2_global = rueda2;
@@ -799,11 +802,17 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
                 mejor_evaluacion_global = mejor_evaluacion_iteracion;
                 mejor_rueda1_global = mejor_rueda1_iteracion;
                 mejor_rueda2_global = mejor_rueda2_iteracion;
+                sin_mejora_global = 0;
 
                 //cout << "-------------------------------------------- Mejora global encontrada en la iteracion " << iteracion << "Nuevo optimo global" << mejor_evaluacion_global << endl;
             }
+            else{
+                sin_mejora_global++;
+            }
         }
         else{
+
+            sin_mejora_global++;
 
             float delta = mejor_evaluacion_iteracion - mejor_evaluacion_actual;
 
@@ -830,6 +839,13 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
             else{
                 //cout << "Solucion peor rechazada en la iteracion " << iteracion << endl;
             }
+        }
+
+        // reheat
+
+        if (sin_mejora_global == iteraciones_sin_mejora){
+            temperatura = temperatura * tasa_reheat;
+            sin_mejora_global = 0;
         }
 
         //cambio de temperatura
@@ -912,6 +928,7 @@ vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rued
 
     for(int iter=0; iter < cantidad_iteraciones_TS; iter++){
 
+        cout << "Iteracion: " << iter << " Evaluacion actual: " << evaluacion_actual << " Mejor evaluacion global: " << mejor_evaluacion_gobal << endl;
 
         probabilidad_operador = distrib_probabilidad(rd);
 
@@ -1171,6 +1188,7 @@ vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rued
         // fixture actual va a ser el mejor de la iteracion (no importa si empeora al fixture actual anterior)
         rueda1_actual = mejor_rueda1_iteracion;
         rueda2_actual = mejor_rueda2_iteracion;
+        evaluacion_actual = mejor_evaluacion_iteracion;
 
         //revisando si es la mejor solucion hasta el momento
         //cout << "Mejor evaluacion iteracion: " << mejor_evaluacion_iteracion << endl;
@@ -1286,6 +1304,9 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
         int contador_iteraciones_cambio_temperatura = 0;
 
         for (int iteracion=0; iteracion < cantidad_iteraciones; iteracion++){
+
+            cout << "Iteracion: " << iteracion << " Temperatura: " << temperatura << " Evaluacion actual: " << mejor_evaluacion_actual << " Mejor evaluacion global: " << mejor_evaluacion_global << endl;
+
             int operador = distrib_operador(rd);
 
             int mejor_evaluacion_iteracion = 999999;
@@ -1534,7 +1555,7 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
 vector<vector<vector<int>>> hc_pdc(int enfoque, vector<vector<int>> rueda1, vector<vector<int>> rueda2, int fecha_limite_vacaciones, vector<int> equipos_fuertes, vector<int> equipos_libertadores, vector<int> equipos_prelibertadores, 
     vector<int> equipos_sudamericana, vector<int> equipos_zona_norte, vector<int> equipos_zona_centro, vector<int> equipos_zona_sur, vector<int> equipos_zona_vacaciones, vector<int> equipos_santiago,
     vector<int> fechas_previas_prelibertadores, vector<int> fechas_posteriores_prelibertadores, vector<int> fechas_previas_libertadores, vector<int> fechas_posteriores_libertadores, vector<int> fechas_previas_sudamericana,
-    vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante, int temperatura_inicial, int numero_iteraciones, float tasa_cambio_temperatura, int numero_cambios_temperatura){
+    vector<int> fechas_posteriores_sudamericana, vector<vector<int>> solicituedes_visitante){
 
     int mejor_evaluacion_global = funcion_evaluacion_pdc(enfoque, rueda1, rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, 
                             equipos_zona_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana,
@@ -1661,8 +1682,8 @@ vector<vector<vector<int>>> hc_pdc(int enfoque, vector<vector<int>> rueda1, vect
         }
 
         //todos los SwapMatchRound
-        for(int i = 1; i<=15; i++){
-            for(int j = 1; j <= 16; j++){
+        for(int i = 1; i<=16; i++){
+            for(int j = 1; j <= 14; j++){
                 for(int k = j+1; k <= 15; k++){
                     for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
                 
@@ -1707,6 +1728,7 @@ vector<vector<vector<int>>> hc_pdc(int enfoque, vector<vector<int>> rueda1, vect
         }
         else{
             mejora = false;
+            cout << "No hubo mejora HCMM" << endl;
         }
     }
 

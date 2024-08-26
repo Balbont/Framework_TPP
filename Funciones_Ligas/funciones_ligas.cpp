@@ -251,6 +251,29 @@ void pdc_ts(int enfoque_pdc){
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
     cout << "\n";
 
+    // -------------------------------------------------- HILL CLIMBING ------------------------------------------------------
+
+    cout << "\nAplicando Hill Climbing mejor mejora con solucion de TS" << endl;
+
+    vector<vector<vector<int>>> ruedas_HCMM_TS = hc_pdc(enfoque_pdc, rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    int evaluacion_actual_HCMM_TS = funcion_evaluacion_pdc(enfoque_pdc, rueda1_TS, rueda2_TS, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+
+    print_calendarizacion(ruedas_HCMM_TS[0], ruedas_HCMM_TS[1]);
+    cout << "\nFixture HCMM_TS" << endl;
+    cout << "Valor evaluacion: " << evaluacion_actual_HCMM_TS << endl;
+    cout << "\n";
+
+    print_costo_restricciones_pdc(enfoque_pdc, ruedas_HCMM_TS[0], ruedas_HCMM_TS[1], fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+
     // -------------------------------------------------- REVISIONES ------------------------------------------------------
 
     /*
@@ -666,6 +689,27 @@ void pdc_sa(int enfoque_pdc){
     print_costo_restricciones_pdc(enfoque_pdc, rueda1_SA, rueda2_SA, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores,
     equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores,
     fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    // -------------------------------------------------- HILL CLIMBING ------------------------------------------------------
+
+    cout << "\nAplicando Hill Climbing mejor mejora con solucion de SA" << endl;
+
+    vector<vector<vector<int>>> ruedas_HCMM_SA = hc_pdc(enfoque_pdc, rueda1_SA, rueda2_SA, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    int evaluacion_actual_HCMM_SA = funcion_evaluacion_pdc(enfoque_pdc, ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+    cout << "\nFixture HCMM_SA" << endl;
+    cout << "Valor evaluacion: " << evaluacion_actual_HCMM_SA << endl;
+    cout << "\n";
+
+    print_calendarizacion(ruedas_HCMM_SA[0], ruedas_HCMM_SA[1]);
+
+    print_costo_restricciones_pdc(enfoque_pdc, ruedas_HCMM_SA[0], ruedas_HCMM_SA[1], fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
 
     // -------------------------------------------------- REVISIONES ------------------------------------------------------
 
@@ -1284,12 +1328,14 @@ void epl_ts_1314(){
 
 void epl_sa_1314(){
 
-    // Parametros SA EPL 23/24
+    // Parametros SA EPL 13/14
 
-    int tempertura = 1000;
+    int tempertura = 3000;
     float tasa_enfriamiento = 0.8; 
-    int cambios_temperatura = 5;
-    int cantidad_iteraciones = 50;
+    int cambios_temperatura = 15;
+    int cantidad_iteraciones = 3000;
+    int iter_sin_mejora = 300;
+    float tasa_recalentamiento = 1.2;
 
     //Parametros instancia
    
@@ -1544,7 +1590,7 @@ void epl_sa_1314(){
     vector<vector<int>> rueda2_inicial = generacion_rueda_mirrored(rueda1_inicial);
     
     // calendarizacion generada con SA
-    vector<vector<vector<int>>> ruedas_SA = sa_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_inicial, rueda2_inicial, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias, tempertura, cantidad_iteraciones, tasa_enfriamiento, cambios_temperatura);
+    vector<vector<vector<int>>> ruedas_SA = sa_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_inicial, rueda2_inicial, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias, tempertura, cantidad_iteraciones, tasa_enfriamiento, cambios_temperatura, iter_sin_mejora, tasa_recalentamiento);
 
     vector<vector<int>> rueda1_SA = ruedas_SA[0];
     vector<vector<int>> rueda2_SA = ruedas_SA[1];
@@ -2197,6 +2243,8 @@ void epl_sa_2324(){
     float tasa_enfriamiento = 0.8; 
     int cambios_temperatura = 5;
     int cantidad_iteraciones = 50;
+    int iter_sin_mejora = 50;
+    float tasa_recalentamiento = 1.1;
 
     //Parametros instancia
    
@@ -2440,7 +2488,7 @@ void epl_sa_2324(){
     vector<vector<int>> rueda2_inicial = generacion_rueda_mirrored(rueda1_inicial);
     
     // calendarizacion generada con SA
-    vector<vector<vector<int>>> ruedas_SA = sa_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_inicial, rueda2_inicial, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias, tempertura, cantidad_iteraciones, tasa_enfriamiento, cambios_temperatura);
+    vector<vector<vector<int>>> ruedas_SA = sa_epl(distancia_optima, fecha_boxing_day, fecha_new_year, rueda1_inicial, rueda2_inicial, equipos_fuertes, equipos_UCL, equipos_UEL, equipos_UECL, equipos_emparejados, fechas_previas_FA_Cup, fechas_posteriores_FA_Cup, fechas_previas_UCL, fechas_posteriores_UCL, fechas_previas_UEL, fechas_posteriores_UEL, fechas_previas_UECL, fechas_posteriores_UECL, fechas_bank_holidays, solicituedes_visitante, distancias, tempertura, cantidad_iteraciones, tasa_enfriamiento, cambios_temperatura, iter_sin_mejora, tasa_recalentamiento);
 
     vector<vector<int>> rueda1_SA = ruedas_SA[0];
     vector<vector<int>> rueda2_SA = ruedas_SA[1];
@@ -2637,3 +2685,333 @@ void epl_sa_2324(){
     cout << "Errores en consistencia de fecha: " << error_consistencia_fecha << endl;
     */
 } 
+
+void revision_pdc_24(){
+
+    vector<vector<int>> original_rueda1, original_rueda2;
+
+    vector<int> t1_original_rueda1 = {-16,-12,6,2,-8,9,-11,13,-3,7,-5,-14,4,-10,15};
+    vector<int> t2_original_rueda1 = {5,14,-15,-1,12,-13,16,8,-4,-6,10,-7,3,11,-9};
+    vector<int> t3_original_rueda1 = {-7,11,-4,9,14,-6,5,-10,1,-15,-16,12,-2,13,-8};
+    vector<int> t4_original_rueda1 = {-9,13,3,-12,7,-5,6,-11,2,-10,15,-8,-1,16,-14};
+    vector<int> t5_original_rueda1 = {-2,16,-13,6,-10,4,-3,15,11,-14,1,-9,8,-12,7};
+    vector<int> t6_original_rueda1 = {-13,7,-1,-5,15,3,-4,-12,10,2,-8,16,-14,9,-11};
+    vector<int> t7_original_rueda1 = {3,-6,10,13,-4,-15,12,-14,9,-1,11,2,-16,8,-5};
+    vector<int> t8_original_rueda1 = {-11,15,-16,-10,1,-14,13,-2,12,-9,6,4,-5,-7,3};
+    vector<int> t9_original_rueda1 = {4,-10,12,-3,11,-1,14,-16,-7,8,-13,5,15,-6,2};
+    vector<int> t10_original_rueda1 = {-14,9,-7,8,5,-12,-15,3,-6,4,-2,11,-13,1,-16};
+    vector<int> t11_original_rueda1 = {8,-3,14,15,-9,-16,1,4,-5,13,-7,-10,12,-2,6};
+    vector<int> t12_original_rueda1 = {-15,1,-9,4,-2,10,-7,6,-8,16,14,-3,-11,5,-13};
+    vector<int> t13_original_rueda1 = {6,-4,5,-7,16,2,-8,-1,14,-11,9,-15,10,-3,12};
+    vector<int> t14_original_rueda1 = {10,-2,-11,16,-3,8,-9,7,-13,5,-12,1,6,-15,4};
+    vector<int> t15_original_rueda1 = {12,-8,2,-11,-6,7,10,-5,-16,3,-4,13,-9,14,-1};
+    vector<int> t16_original_rueda1 = {1,-5,8,-14,-13,11,-2,9,15,-12,3,-6,7,-4,10};
+
+    vector<int> t1_original_rueda2 = {16,12,-6,-2,8,-9,11,-13,3,-7,5,14,-4,10,-15};
+    vector<int> t2_original_rueda2 = {-5,-14,15,1,-12,13,-16,-8,4,6,-10,7,-3,-11,9};
+    vector<int> t3_original_rueda2 = {7,-11,4,-9,-14,6,-5,10,-1,15,16,-12,2,-13,8};
+    vector<int> t4_original_rueda2 = {9,-13,-3,12,-7,5,-6,11,-2,10,-15,8,1,-16,14};
+    vector<int> t5_original_rueda2 = {2,-16,13,-6,10,-4,3,-15,-11,14,-1,9,-8,12,-7};
+    vector<int> t6_original_rueda2 = {13,-7,1,5,-15,-3,4,12,-10,-2,8,-16,14,-9,11};
+    vector<int> t7_original_rueda2 = {-3,6,-10,-13,4,15,-12,14,-9,1,-11,-2,16,-8,5};
+    vector<int> t8_original_rueda2 = {11,-15,16,10,-1,14,-13,2,-12,9,-6,-4,5,7,-3};
+    vector<int> t9_original_rueda2 = {-4,10,-12,3,-11,1,-14,16,7,-8,13,-5,-15,6,-2};
+    vector<int> t10_original_rueda2 = {14,-9,7,-8,-5,12,15,-3,6,-4,2,-11,13,-1,16};
+    vector<int> t11_original_rueda2 = {-8,3,-14,-15,9,16,-1,-4,5,-13,7,10,-12,2,-6};
+    vector<int> t12_original_rueda2 = {15,-1,9,-4,2,-10,7,-6,8,-16,-14,3,11,-5,13};
+    vector<int> t13_original_rueda2 = {-6,4,-5,7,-16,-2,8,1,-14,11,-9,15,-10,3,-12};
+    vector<int> t14_original_rueda2 = {-10,2,11,-16,3,-8,9,-7,13,-5,12,-1,-6,15,-4};
+    vector<int> t15_original_rueda2 = {-12,8,-2,11,6,-7,-10,5,16,-3,4,-13,9,-14,1};
+    vector<int> t16_original_rueda2 = {-1,5,-8,14,13,-11,2,-9,-15,12,-3,6,-7,4,-10};
+
+    original_rueda1.push_back(t1_original_rueda1);
+    original_rueda1.push_back(t2_original_rueda1);
+    original_rueda1.push_back(t3_original_rueda1);
+    original_rueda1.push_back(t4_original_rueda1);
+    original_rueda1.push_back(t5_original_rueda1);
+    original_rueda1.push_back(t6_original_rueda1);
+    original_rueda1.push_back(t7_original_rueda1);
+    original_rueda1.push_back(t8_original_rueda1);
+    original_rueda1.push_back(t9_original_rueda1);
+    original_rueda1.push_back(t10_original_rueda1);
+    original_rueda1.push_back(t11_original_rueda1);
+    original_rueda1.push_back(t12_original_rueda1);
+    original_rueda1.push_back(t13_original_rueda1);
+    original_rueda1.push_back(t14_original_rueda1);
+    original_rueda1.push_back(t15_original_rueda1);
+    original_rueda1.push_back(t16_original_rueda1);
+
+    original_rueda2.push_back(t1_original_rueda2);
+    original_rueda2.push_back(t2_original_rueda2);
+    original_rueda2.push_back(t3_original_rueda2);
+    original_rueda2.push_back(t4_original_rueda2);
+    original_rueda2.push_back(t5_original_rueda2);
+    original_rueda2.push_back(t6_original_rueda2);
+    original_rueda2.push_back(t7_original_rueda2);
+    original_rueda2.push_back(t8_original_rueda2);
+    original_rueda2.push_back(t9_original_rueda2);
+    original_rueda2.push_back(t10_original_rueda2);
+    original_rueda2.push_back(t11_original_rueda2);
+    original_rueda2.push_back(t12_original_rueda2);
+    original_rueda2.push_back(t13_original_rueda2);
+    original_rueda2.push_back(t14_original_rueda2);
+    original_rueda2.push_back(t15_original_rueda2);
+    original_rueda2.push_back(t16_original_rueda2);
+
+    // ---------------------------------------------------- lectura de instanica PDC ----------------------------------------------------
+
+    //Parametros instancia
+
+    int contador_fila = 0;
+
+    int numero_solicitudes;
+    int cantidad_equipos;
+    int fecha_limite_vacaciones;
+
+    vector<int> equipos_fuertes;
+    vector<int> equipos_libertadores;
+    vector<int> equipos_prelibertadores;
+    vector<int> equipos_sudamericana;
+
+    vector<int> equipos_zona_norte;
+    vector<int> equipos_zona_centro;
+    vector<int> equipos_zona_sur;
+    vector<int> equipos_zonas_vacaciones;
+    vector<int> equipos_santiago;
+
+    vector<int> fechas_previas_prelibertadores;
+    vector<int> fechas_posteriores_prelibertadores;
+    vector<int> fechas_previas_libertadores;
+    vector<int> fechas_posteriores_libertadores;
+    vector<int> fechas_previas_sudamericana;
+    vector<int> fechas_posteriores_sudamericana;
+    
+    vector<vector<int>> solicituedes_visitante;
+
+    // ----------------------------------------------------- LECTURA INSTANCIA ------------------------------------------------------
+
+    ifstream file("Funciones_Ligas/instanciaPDC.txt");
+
+    string line;
+
+    if (file.is_open()) { 
+        while (getline(file, line)) { 
+            if (contador_fila == 0){
+                cantidad_equipos = stoi(line);
+                //cout << "Cantidad de equipos: " << cantidad_equipos << endl;
+            }
+            else if (contador_fila == 1){ // equipos fuertes
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_fuertes.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 2){ // equipos libertadores
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_libertadores.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 3){ // equipos pre libertadores
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_prelibertadores.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 4){ // equipos sudamericana
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_sudamericana.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 5){ // equipos zona norte
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_zona_norte.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 6){ // equipos zona centro
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_zona_centro.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 7){ // equipos zona sur
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_zona_sur.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 8){ // equipos zona vacaciones
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_zonas_vacaciones.push_back(stoi(vstrings[i]));
+                }  
+            }
+            else if (contador_fila == 9){ // equipos de santiago
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    equipos_santiago.push_back(stoi(vstrings[i]));
+                }  
+            }
+            else if (contador_fila == 10){ // fechas previas pre libertadores
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    fechas_previas_prelibertadores.push_back(stoi(vstrings[i]));
+                }  
+            }
+            else if (contador_fila == 11){ // fechas posteriores pre libertadores
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    fechas_posteriores_prelibertadores.push_back(stoi(vstrings[i]));
+                }  
+            }
+            else if (contador_fila == 12){ // fechas previas libertadores
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    fechas_previas_libertadores.push_back(stoi(vstrings[i]));
+                }  
+            }
+            else if (contador_fila == 13){ // fechas posteriores libertadores
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene cada palabra de la linea
+                for (int i = 0; i < vstrings.size(); i++){
+                    fechas_posteriores_libertadores.push_back(stoi(vstrings[i]));
+                }  
+            }
+            else if (contador_fila == 14){ // fechas previas sudamericana
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene
+                for (int i = 0; i < vstrings.size(); i++){
+                    fechas_previas_sudamericana.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if (contador_fila == 15){ // fechas posteriores sudamericana
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end); // vstrings tiene
+                for (int i = 0; i < vstrings.size(); i++){
+                    fechas_posteriores_sudamericana.push_back(stoi(vstrings[i]));
+                }
+            }
+            else if(contador_fila == 16){
+                fecha_limite_vacaciones = stoi(line);
+            }
+            else if (contador_fila == 17){ // solicitudes visitante
+                numero_solicitudes = stoi(line);
+            }
+            else{
+                std::stringstream ss(line);
+                std::istream_iterator<std::string> begin(ss);
+                std::istream_iterator<std::string> end;
+                std::vector<std::string> vstrings(begin, end);
+                vector<int> aux_solicitud;
+                aux_solicitud.clear();
+                for (int i = 0; i < vstrings.size(); i++){
+                    aux_solicitud.push_back(stoi(vstrings[i]));
+                }
+                solicituedes_visitante.push_back(aux_solicitud);
+            }
+            contador_fila++;
+        }
+    }
+    else { 
+        cout << "Unable to open file\n";
+    }
+
+    // se asume que los equipos participantes en pre libertadores van a acceder a libertadores
+
+    for (int i = 0; i < equipos_prelibertadores.size(); i++){
+        equipos_libertadores.push_back(equipos_prelibertadores[i]);
+    }
+
+    cout << "Enfoque Balanceado" << endl;
+
+    int evaluacion_actual = funcion_evaluacion_pdc(1, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    cout << "Evaluacion: " << evaluacion_actual << endl;
+
+    print_costo_restricciones_pdc(1, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    cout << "Enfoque Clasicos" << endl;
+
+    evaluacion_actual = funcion_evaluacion_pdc(2, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    cout << "Evaluacion: " << evaluacion_actual << endl;
+
+    print_costo_restricciones_pdc(2, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);    
+
+    cout << "Enfoque Zonas" << endl;
+
+    evaluacion_actual = funcion_evaluacion_pdc(3, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    cout << "Evaluacion: " << evaluacion_actual << endl;
+
+    print_costo_restricciones_pdc(3, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    cout << "Enfoque Torneos Internacionales" << endl;
+
+    evaluacion_actual = funcion_evaluacion_pdc(4, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+    cout << "Evaluacion: " << evaluacion_actual << endl;
+
+    print_costo_restricciones_pdc(4, original_rueda1, original_rueda2, fecha_limite_vacaciones, equipos_fuertes, equipos_libertadores, equipos_prelibertadores, 
+        equipos_sudamericana, equipos_zona_norte, equipos_zona_centro, equipos_zona_sur, equipos_zonas_vacaciones, equipos_santiago, fechas_previas_prelibertadores, fechas_posteriores_prelibertadores, 
+        fechas_previas_libertadores, fechas_posteriores_libertadores, fechas_previas_sudamericana, fechas_posteriores_sudamericana, solicituedes_visitante);
+
+}

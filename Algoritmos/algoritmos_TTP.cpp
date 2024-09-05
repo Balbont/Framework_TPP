@@ -190,12 +190,25 @@ vector<vector<vector<int>>> tabu_search_epl(int distancia_optima, int fecha_boxi
 
             Swap_matches_contador++;
             //cout << "SwapMatches" << endl;
-            for(int i=1; i <= cantidad_equipos-1;i++){ //t1
-                for(int j = i+1; j<= cantidad_equipos; j++){ //t1
-                    for (int k = 1; k <= cantidad_fechas; k++){ //fecha
-                        for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){ // rueda
+
+            for(int iter_sm = 0; iter_sm < 500; iter_sm++){
+
+            //for(int i=1; i <= cantidad_equipos-1;i++){ //t1
+                //for(int j = i+1; j<= cantidad_equipos; j++){ //t1
+                    //for (int k = 1; k <= cantidad_fechas; k++){ //fecha
+                        //for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){ // rueda
 
                             //cout << "equipo1 " << i << " equipo2 " << j << " fecha " << k << " rueda " << rueda_elegida << endl;
+
+                            int i = distrib_equipo(rd);
+                            int j = distrib_equipo(rd);
+                            while (i == j)
+                            {
+                                j = distrib_equipo(rd);
+                            }
+                            int k = distrib_fecha(rd);
+
+                            int rueda_elegida = distrib_rueda(rd);
 
                             if (rueda_elegida == 1){
                                 fecha_random_real = k;
@@ -237,9 +250,9 @@ vector<vector<vector<int>>> tabu_search_epl(int distancia_optima, int fecha_boxi
                                     rueda_seleccionada = rueda_elegida;
                                 }
                             }
-                        }
-                    }
-                }
+                        //}
+                    //}
+                //}
             }
 
             lista_tabu_equipos.push_back(equipo1_seleccionado);
@@ -257,10 +270,23 @@ vector<vector<vector<int>>> tabu_search_epl(int distancia_optima, int fecha_boxi
             Swap_match_round_contador++;
             //cout << "SwapMatchRound" << endl;
 
-            for(int i = 1; i<=cantidad_equipos; i++){
-                for(int j = 1; j <= cantidad_fechas-1; j++){
-                    for(int k = j+1; k <= cantidad_fechas; k++){
-                        for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
+            for(int iter_smr = 0; iter_smr < 500; iter_smr++){
+
+            //for(int i = 1; i<=cantidad_equipos; i++){
+                //for(int j = 1; j <= cantidad_fechas-1; j++){
+                    //for(int k = j+1; k <= cantidad_fechas; k++){
+                        //for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
+
+                            int i = distrib_equipo(rd);
+                            int j = distrib_fecha(rd);
+                            int k = distrib_fecha(rd);
+
+                            while (j == k)
+                            {
+                                k = distrib_fecha(rd);
+                            }
+
+                            int rueda_elegida = distrib_rueda(rd);
 
                             if (rueda_elegida == 1){
                                 fecha1_real_seleccionada = j;
@@ -304,9 +330,9 @@ vector<vector<vector<int>>> tabu_search_epl(int distancia_optima, int fecha_boxi
                                     rueda_seleccionada = rueda_elegida;
                                 }
                             }
-                        }
-                    }
-                }
+                        //}
+                    //}
+                //}
             }
 
             lista_tabu_fechas.push_back(fecha1_seleccionada);
@@ -633,7 +659,7 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
 
         if(operador == 1){ // SWAP HOMES
             
-            for (int iter_sh = 0; iter_sh < 95; iter_sh++){ // vecindario completo 190
+            for (int iter_sh = 0; iter_sh < 100; iter_sh++){ // vecindario completo 190
 
                 int equipo_1 = distrib_equipo(rd);
                 int equipo_2 = distrib_equipo(rd);
@@ -659,7 +685,7 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
         }
         else if (operador == 2){ // SWAP TEAMS
             
-                for (int iter_sr = 0; iter_sr < 190; iter_sr++){ // vecindario completo 190
+                for (int iter_sr = 0; iter_sr < 100; iter_sr++){ // vecindario completo 190
 
                     int equipo_1 = distrib_equipo(rd);
                     int equipo_2 = distrib_equipo(rd);
@@ -685,7 +711,7 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
         }
         else if (operador == 3){ // SWAP ROUNDS
             
-            for(int k = 0; k<171; k++){ // vecindario completo 342
+            for(int k = 0; k<100; k++){ // vecindario completo 342
 
                 int fecha_1 = distrib_fecha(rd);
                 int fecha_2 = distrib_fecha(rd);
@@ -713,7 +739,7 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
         }
         else if (operador == 4){ // SWAP MATCHES
 
-            for(int iter_sm = 1; iter_sm <= 3860; iter_sm++){ // vecindario completo 7720
+            for(int iter_sm = 1; iter_sm <= 100; iter_sm++){ // vecindario completo 7720
 
                 int equipo_1 = distrib_equipo(rd);
                 int equipo_2 = distrib_equipo(rd);
@@ -752,7 +778,7 @@ vector<vector<vector<int>>> sa_epl(int distancia_optima, int fecha_boxing_day, i
         }
         else{
 
-            for(int iter_smr = 1; iter_smr <= 3420; iter_smr++){ //vecindario completo 6840
+            for(int iter_smr = 1; iter_smr <= 100; iter_smr++){ //vecindario completo 6840
 
                 int equipo_1 = distrib_equipo(rd);
                 int fecha_1 = distrib_fecha(rd);
@@ -1052,10 +1078,22 @@ vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rued
             Swap_matches_contador++;
             //cout << "SwapMatches" << endl;
 
-            for(int i=1; i <= cantidad_equipos-1;i++){ //t1
-                for(int j = i+1; j<= cantidad_equipos; j++){ //t1
-                    for (int k = 1; k <= cantidad_fechas; k++){ //fecha
-                        for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){ // rueda
+            for (int iter_sm = 0; iter_sm < 500; iter_sm++){
+
+            //for(int i=1; i <= cantidad_equipos-1;i++){ //t1
+                //for(int j = i+1; j<= cantidad_equipos; j++){ //t1
+                    //for (int k = 1; k <= cantidad_fechas; k++){ //fecha
+                        //for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){ // rueda
+
+                            int i = distrib_equipo(rd);
+                            int j = distrib_equipo(rd);
+
+                            while (i == j){
+                                j = distrib_equipo(rd);
+                            }
+                            int k = distrib_fecha(rd);
+
+                            int rueda_elegida = distrib_rueda(rd);
 
                             if (rueda_elegida == 1){
                                 fecha_random_real = k;
@@ -1097,9 +1135,9 @@ vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rued
                                     rueda_seleccionada = rueda_elegida;
                                 }
                             }
-                        }
-                    }
-                }
+                        //}
+                    //}
+                //}
             }
 
             lista_tabu_equipos.push_back(equipo1_seleccionado);
@@ -1116,12 +1154,24 @@ vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rued
             Swap_match_round_contador++;
             //cout << "SwapMatchRound" << endl;
 
-            for(int i = 1; i<=cantidad_equipos; i++){
-                for(int j = 1; j <= cantidad_fechas-1; j++){
-                    for(int k = j+1; k <= cantidad_fechas; k++){
-                        for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
+            for(int iter_smr = 0; iter_smr < 500; iter_smr++){
+
+            //for(int i = 1; i<=cantidad_equipos; i++){
+                //for(int j = 1; j <= cantidad_fechas-1; j++){
+                    //for(int k = j+1; k <= cantidad_fechas; k++){
+                        //for(int rueda_elegida = 1; rueda_elegida <= 2; rueda_elegida++){
 
                             //cout << "Equipo: " << i << " Fecha1: " << j << " Fecha2: " << k << " Rueda: " << rueda_elegida << endl;
+
+                            int i = distrib_equipo(rd);
+                            int j = distrib_fecha(rd);
+                            int k = distrib_fecha(rd);
+
+                            while (j == k){
+                                k = distrib_fecha(rd);
+                            }
+
+                            int rueda_elegida = distrib_rueda(rd);
 
                             if (rueda_elegida == 1){
                                 fecha1_real_seleccionada = j;
@@ -1172,12 +1222,10 @@ vector<vector<vector<int>>> tabu_search_pdc(int enfoque,vector<vector<int>> rued
                                     fecha2_seleccionada = fecha2_real_seleccionada;
                                     rueda_seleccionada = rueda_elegida;
                                 }
-
-                                //cout << "Post asiganciones" << endl;
                             }
-                        }
-                    }
-                }
+                        //}
+                    //}
+                //}
             }
 
             lista_tabu_fechas.push_back(fecha1_seleccionada);
@@ -1313,7 +1361,7 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
 
             if(operador == 1){ // SWAP HOMES
                 
-                for (int iter_sh = 0; iter_sh < 60; iter_sh++){ //vecindario completo es 120
+                for (int iter_sh = 0; iter_sh < 100; iter_sh++){ //vecindario completo es 120
 
                     int equipo_1 = distrib_equipo(rd);
                     int equipo_2 = distrib_equipo(rd);
@@ -1339,7 +1387,7 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
             }
             else if (operador == 2){ // SWAP TEAMS
                 
-                    for (int iter_sr = 0; iter_sr < 60; iter_sr++){ //vecindario completo es 120
+                    for (int iter_sr = 0; iter_sr < 100; iter_sr++){ //vecindario completo es 120
 
                         int equipo_1 = distrib_equipo(rd);
                         int equipo_2 = distrib_equipo(rd);
@@ -1366,7 +1414,7 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
             }
             else if (operador == 3){ // SWAP ROUNDS
                 
-                for(int k = 0; k<105; k++){ //vecindario completo es 210
+                for(int k = 0; k<100; k++){ //vecindario completo es 210
 
                     int fecha_1 = distrib_fecha(rd);
                     int fecha_2 = distrib_fecha(rd);
@@ -1395,7 +1443,7 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
             }
             else if (operador == 4){ // SWAP MATCHES
 
-                for(int iter_sm = 1; iter_sm <= 1800; iter_sm++){ // vecindario completo es 3600
+                for(int iter_sm = 1; iter_sm <= 100; iter_sm++){ // vecindario completo es 3600
 
                     int equipo_1 = distrib_equipo(rd);
                     int equipo_2 = distrib_equipo(rd);
@@ -1444,7 +1492,7 @@ vector<vector<vector<int>>> sa_pdc(int enfoque, vector<vector<int>> rueda1, vect
             }
             else{
 
-                for(int iter_smr = 1; iter_smr <= 1680; iter_smr++){ // vecindario completo es 3360
+                for(int iter_smr = 1; iter_smr <= 100; iter_smr++){ // vecindario completo es 3360
 
                     int equipo_1 = distrib_equipo(rd);
                     int fecha_1 = distrib_fecha(rd);

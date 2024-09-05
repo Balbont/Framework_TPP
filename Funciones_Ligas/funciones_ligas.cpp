@@ -12,7 +12,7 @@ void pdc_ts(int enfoque_pdc){
 
     //Parametros TS PDC
 
-    int iteraciones = 100;
+    int iteraciones = 1000;
     vector<int> largos_listas_equipos = {8,4,2}; //largos en cada fase
     vector<int> largos_listas_fechas = {12,6,3}; //largos en cada fase
     vector<vector<int>>  probabilidades_operadores = {{10,10,10,35,35},{20,20,20,20,20},{26,27,27,10,10}}; //probalidades en cada fase
@@ -452,10 +452,10 @@ void pdc_sa(int enfoque_pdc){
 
     // Parametros SA PDC
 
-    int tempertura = 1000;
-    float tasa_enfriamiento = 0.8; 
-    int cambios_temperatura = 5;
-    int cantidad_iteraciones = 100;
+    int tempertura = 4058;
+    float tasa_enfriamiento = 0.9722; 
+    int cambios_temperatura = 25;
+    int cantidad_iteraciones = 5000;
 
     //Parametros instancia
 
@@ -1330,12 +1330,12 @@ void epl_sa_1314(){
 
     // Parametros SA EPL 13/14
 
-    int tempertura = 3000;
-    float tasa_enfriamiento = 0.8; 
-    int cambios_temperatura = 15;
-    int cantidad_iteraciones = 3000;
+    int tempertura = 897;
+    float tasa_enfriamiento = 0.958; 
+    int cambios_temperatura = 12;
+    int cantidad_iteraciones = 5000;
     int iter_sin_mejora = 300;
-    float tasa_recalentamiento = 1.2;
+    float tasa_recalentamiento = 1; // si es 1 no hay reheat
 
     //Parametros instancia
    
